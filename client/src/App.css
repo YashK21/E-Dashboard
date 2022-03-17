@@ -19,3 +19,32 @@ padding: 10px;
   width: 100%;
   background-color: skyblue;
 }
+.inputBox {
+  margin: 25px;
+  display: block;
+  padding: 7px;
+  width: 300px;
+  border: 1px solid skyblue;
+
+}
+.submit {
+  margin: 25px;
+  display: block;
+  padding: 7px;
+  width: 300px;
+  border: 1px solid skyblue;
+
+}
+/* .submit:hover{
+  opacity: 1;
+  background-color: #00EEE0;
+  border: 1px #99ccff solid;
+} */
+.submit:active
+{
+  background-color: skyblue;
+  /* border: 1px #000000 solid; */
+}
+.signup{
+  margin-left: 30%;
+}
