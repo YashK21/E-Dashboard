@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
-import { Link, Links } from "react-router-dom";
+import React from "react";
+import { Link, Links, useNavigate } from "react-router-dom";
 const Nav = () => {
   const auth = localStorage.getItem("user");
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.clear();
+    navigate("/signup");
+  };
   return (
     <div>
       <ul className="nav-ul">
@@ -19,7 +24,9 @@ const Nav = () => {
         </li>
         {auth ? (
           <li>
-            <Link to="/logout">Logout</Link>
+            <Link to="/logout" onClick={logout}>
+              Logout
+            </Link>
           </li>
         ) : (
           <li>
