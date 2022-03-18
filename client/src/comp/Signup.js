@@ -2,9 +2,21 @@ import React, { useState } from "react";
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const handleClick = () => {
-    console.warn(name, email, pass);
+  const [password, setPassword] = useState("");
+  const handleClick = async () => {
+    console.warn(name, email, password);
+    const result = await fetch("http://localhost:5000/register", {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    console.log(result);
   };
   return (
     <div className="signup">
@@ -30,9 +42,9 @@ const Signup = () => {
       <input
         className="inputBox"
         type="password"
-        value={pass}
+        value={password}
         onChange={(e) => {
-          setPass(e.target.value);
+          setPassword(e.target.value);
         }}
         placeholder="Enter password"
       />
