@@ -10,8 +10,25 @@ app.get("/", (req, res) => {
 });
 app.post("/register", async (req, res) => {
   const user = new User(req.body);
-  const result = await user.save();
+  let result = await user.save();
+  //to remove password from showing
+  result = result.toObject();
+  delete result.password;
   res.send(result);
+});
+app.post("/login", async (req, res) => {
+  // res.send(req.body);
+  console.log(req.body);
+  if (req.body.password && req.body.email) {
+    let user = await User.findOne(req.body).select("-password");
+    if (user) {
+      res.send(user);
+    } else {
+      res.send("Not Found");
+    }
+  } else {
+    res.send("All are required");
+  }
 });
 app.listen(5000, () => {
   console.log("Server connected");
