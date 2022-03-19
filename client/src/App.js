@@ -4,6 +4,7 @@ import Footer from "./comp/Footer";
 import Nav from "./comp/Nav";
 import Signup from "./comp/Signup";
 import PrivateComp from "./comp/PrivateComp";
+import Login from "./comp/Login";
 function App() {
   return (
     <div className="App">
@@ -17,6 +18,7 @@ function App() {
           <Route path="/profile" element={<h1>Profile</h1>} />
         </Route>
         <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </div>

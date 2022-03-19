@@ -11,7 +11,7 @@ const Signup = () => {
       navigate("/");
     }
   });
-  const handleClick = async () => {
+  const handleSignup = async () => {
     console.warn(name, email, password);
     let result = await fetch("http://localhost:5000/register", {
       method: "POST",
@@ -33,7 +33,7 @@ const Signup = () => {
   };
   return (
     <div className="signup">
-      <h1>Signup comp</h1>
+      <h1>Signup</h1>
       <input
         className="inputBox"
         type="text"
@@ -61,7 +61,7 @@ const Signup = () => {
         }}
         placeholder="Enter password"
       />
-      <button className="submit" type="submit" onClick={handleClick}>
+      <button className="submit" type="submit" onClick={handleSignup}>
         Submit
       </button>
     </div>
