@@ -45,10 +45,14 @@ padding: 10px;
   background-color: skyblue;
   /* border: 1px #000000 solid; */
 }
-.signup{
+.signup,.prodcut{
   margin-left: 30%;
 }
 .login{
   margin-left: 30%;
   margin-top: 100px;
+}
+.nav-right
+{
+  text-align: right;
 }
