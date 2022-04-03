@@ -6,13 +6,14 @@ import Signup from "./comp/Signup";
 import PrivateComp from "./comp/PrivateComp";
 import Login from "./comp/Login";
 import AddProdcut from "./comp/AddProduct";
+import ProductList from "./comp/ProductList";
 function App() {
   return (
     <div className="App">
       <Nav />
       <Routes>
         <Route element={<PrivateComp />}>
-          <Route path="/" element={<h1>Products</h1>} />
+          <Route path="/" element={<ProductList />} />
           <Route path="/add" element={<AddProdcut />} />
           <Route path="/update" element={<h1>Update Products</h1>} />
           <Route path="/logout" />

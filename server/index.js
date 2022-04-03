@@ -44,6 +44,16 @@ app.post("/add-product", async (req, res) => {
   let result = await product.save();
   res.send(result);
 });
+app.get("/product", async (req, res) => {
+  let prodcuts = await Product.find();
+  if (prodcuts.length > 0) {
+    res.json({ prodcuts });
+  } else {
+    res.json({
+      msg: "not found",
+    });
+  }
+});
 app.listen(5000, () => {
   console.log("Server connected");
 });
