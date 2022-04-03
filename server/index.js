@@ -44,15 +44,19 @@ app.post("/add-product", async (req, res) => {
   let result = await product.save();
   res.send(result);
 });
-app.get("/product", async (req, res) => {
-  let prodcuts = await Product.find();
-  if (prodcuts.length > 0) {
-    res.json({ prodcuts });
+app.get("/products", async (req, res) => {
+  let products = await Product.find();
+  if (products.length > 0) {
+    res.json(products);
   } else {
     res.json({
       msg: "not found",
     });
   }
+});
+app.delete("/product/:id", async (req, res) => {
+  const result = await Product.deleteOne({ _id: req.params.id });
+  res.send(result);
 });
 app.listen(5000, () => {
   console.log("Server connected");
