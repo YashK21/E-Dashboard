@@ -10,7 +10,7 @@ const key = config.jwtkey;
 app.use(express.json());
 app.use(cors());
 // home route
-app.get("/", (req, res) => {
+app.get("/", verifytoken, (req, res) => {
   res.send("Home");
 });
 // register
@@ -18,9 +18,22 @@ app.post("/register", async (req, res) => {
   const user = new User(req.body);
   let result = await user.save();
   //to remove password from showing
-  result = result.toObject();
+  result = await result.toObject();
   delete result.password;
-  res.send(result);
+  // res.send(result);
+  jwt.sign({ result }, key, { expiresIn: "4h" }, (err, token) => {
+    if (err) {
+      res.json({
+        success: false,
+        err: "not found",
+      });
+    }
+    res.json({
+      success: true,
+      result,
+      auth: token,
+    });
+  });
 });
 //login
 app.post("/login", async (req, res) => {
@@ -43,25 +56,25 @@ app.post("/login", async (req, res) => {
         });
       });
     } else {
-      // res.send("Not Found");
+      res.send("Not Found");
       res.status(403).json({
         success: false,
         error: "not found",
       });
-      // console.warn("not found");
+      console.warn("not found");
     }
   } else {
     res.send("All fields are required");
   }
 });
 //add-product
-app.post("/add-product", async (req, res) => {
+app.post("/add-product", verifytoken, async (req, res) => {
   let product = new Product(req.body);
   let result = await product.save();
   res.send(result);
 });
 //products
-app.get("/products", async (req, res) => {
+app.get("/products", verifytoken, async (req, res) => {
   let products = await Product.find();
   if (products.length > 0) {
     res.json(products);
@@ -72,12 +85,12 @@ app.get("/products", async (req, res) => {
   }
 });
 //delete product
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:id", verifytoken, async (req, res) => {
   const result = await Product.deleteOne({ _id: req.params.id });
   res.send(result);
 });
 //list product
-app.get("/product/:id", async (req, res) => {
+app.get("/product/:id", verifytoken, async (req, res) => {
   let result = await Product.findOne({ _id: req.params.id });
   if (result) {
     res.send(result);
@@ -86,7 +99,7 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 //update
-app.put("/product/:id", async (req, res) => {
+app.put("/product/:id", verifytoken, async (req, res) => {
   let result = await Product.updateOne(
     { _id: req.params.id },
     {
@@ -96,7 +109,7 @@ app.put("/product/:id", async (req, res) => {
   res.send(result);
 });
 //search
-app.get("/search/:key", async (req, res) => {
+app.get("/search/:key", verifytoken, async (req, res) => {
   let result = await Product.find({
     $or: [
       { name: { $regex: req.params.key } },
@@ -107,6 +120,30 @@ app.get("/search/:key", async (req, res) => {
   });
   res.send(result);
 });
+//verify token
+function verifytoken(req, res, next) {
+  let token = req.headers["authorization"];
+  if (token) {
+    token = token.split(" ")[1];
+    jwt.verify(token, key, (error, valid) => {
+      if (error) {
+        res.status(401).json({
+          success: false,
+          msg: "wrong token",
+        });
+      } else {
+        next();
+      }
+    });
+
+    // console.log("middleware called", token);
+  } else {
+    res.status(403).json({
+      success: false,
+      msg: "token not found",
+    });
+  }
+}
 app.listen(5000, () => {
   console.log("Server connected");
 });

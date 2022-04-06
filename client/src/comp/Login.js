@@ -21,8 +21,9 @@ const Login = () => {
       },
     });
     result = await result.json();
-    if (result.success) {
+    if (result.auth) {
       localStorage.setItem("user", JSON.stringify(result.data));
+      localStorage.setItem("token", JSON.stringify(result.auth));
       console.log("success");
       navigate("/");
     } else {
