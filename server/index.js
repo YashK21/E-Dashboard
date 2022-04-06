@@ -4,6 +4,9 @@ const cors = require("cors");
 const User = require("./db/User");
 const Product = require("./db/Product");
 const app = express();
+const jwt = require("jsonwebtoken");
+const config = require("./config.json");
+const key = config.jwtkey;
 app.use(express.json());
 app.use(cors());
 // home route
@@ -26,9 +29,18 @@ app.post("/login", async (req, res) => {
   if (req.body.password && req.body.email) {
     let user = await User.findOne(req.body).select("-password");
     if (user) {
-      res.status(200).json({
-        success: true,
-        data: user,
+      jwt.sign({ user }, key, { expiresIn: "4h" }, (err, token) => {
+        if (err) {
+          res.status(403).json({
+            success: false,
+            error: "not found",
+          });
+        }
+        res.status(200).json({
+          success: true,
+          data: user,
+          auth: token,
+        });
       });
     } else {
       // res.send("Not Found");
