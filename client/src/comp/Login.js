@@ -12,7 +12,7 @@ const Login = () => {
   //   }
   // }, []);
   const handlelogin = async () => {
-    // console.warn(email, password);
+    console.warn(email, password);
     let result = await fetch("http://localhost:5000/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
